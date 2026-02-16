@@ -1,0 +1,10 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Simple S3 Bucket Creation
+
+Resources:
+  MyS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: my-simple-cloudformation-bucket-1202026
+      VersioningConfiguration:
+        Status: Enabled
