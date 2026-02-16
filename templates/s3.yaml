@@ -8,12 +8,12 @@ Resources:
       BucketName: my-simple-cloudformation-bucket-1202026
       VersioningConfiguration:
         Status: Enabled
-        
+
 Outputs:
   BucketName:
     Description: Name of the created S3 bucket
-    Value: !Ref S3Bucket
+    Value: !Ref MyS3Bucket
 
   BucketArn:
     Description: ARN of the created S3 bucket
-    Value: !GetAtt S3Bucket.Arn
+    Value: !GetAtt MyS3Bucket.Arn
