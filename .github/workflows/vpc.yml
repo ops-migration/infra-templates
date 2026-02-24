@@ -1,4 +1,4 @@
-name: CD - VPC Deploy
+name: CD - vpc-template
 
 on:
   push:
