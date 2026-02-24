@@ -1,4 +1,4 @@
-name: CD - ECS Deploy
+name: CD - ecs-template
 
 on:
   push:
