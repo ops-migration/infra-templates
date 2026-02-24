@@ -13,7 +13,7 @@ Resources:
         KeyPairName: dev-ecs-keypair
         InstanceType: t4g.small
         ALBSecurityGroup: sg-01f333a654dbac8f1
-        ALBTargetGroupArn: arn:aws:elasticloadbalancing:us-east-1:533267275979:listener/app/dev-alb/1376405deaecf4d1/51a678a003d78b46
+        ALBTargetGroupArn: arn:aws:elasticloadbalancing:us-east-1:533267275979:targetgroup/dev-tg/8f0ca67570887269
         
       Tags:
         - Key: Environment
