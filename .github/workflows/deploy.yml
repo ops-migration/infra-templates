@@ -1,19 +1,12 @@
-name: Deploy CloudFormation Templates
+name: CD - Deploy to dev
 
 on:
   push:
     branches:
-      - main
+      - dev-i
 
 jobs:
-  deploy-cloudformation:
-    runs-on:
-      - codebuild-shared-workflow-${{ github.run_id }}-${{ github.run_attempt }}
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Copy templates to S3
-        run: |
-          aws s3 cp templates/ s3://ecs-migration-cloud-formation-templates/templates/ --recursive --exclude "*" --include "*.yaml"
+  deploy-qa:
+    uses: ops-migration/central-shared-workflow/.github/workflows/cd-workflow.yml@main
+    with:
+      aws-region: "us-east-1"
