@@ -1,14 +1,17 @@
-name: CD - Template Deploy
+name: CD - VPC Deploy
 
 on:
   push:
     branches:
       - dev-i
+    paths:
+      - 'iac/aws/us-east-1/vpc.yaml'
 
 jobs:
-  deploy-qa:
+  deploy:
     uses: ops-migration/central-shared-workflow/.github/workflows/cd-templates.yml@main
     with:
       aws-region: "us-east-1"
-      cf-stack-name: "vpc-stack" 
+      cf-stack-name: "vpc-stack"
       template-file: "vpc.yaml"
+    secrets: inherit
