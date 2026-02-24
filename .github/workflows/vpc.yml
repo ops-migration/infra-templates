@@ -14,4 +14,3 @@ jobs:
       aws-region: "us-east-1"
       cf-stack-name: "vpc-stack"
       template-file: "vpc.yaml"
-    secrets: inherit
