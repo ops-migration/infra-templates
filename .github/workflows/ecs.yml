@@ -1,0 +1,17 @@
+name: CD - ECS Deploy
+
+on:
+  push:
+    branches:
+      - dev-i
+    paths:
+      - 'iac/aws/us-east-1/ecs.yaml'
+
+jobs:
+  deploy:
+    uses: ops-migration/central-shared-workflow/.github/workflows/cd-templates.yml@main
+    with:
+      aws-region: "us-east-1"
+      cf-stack-name: "ecs-stack"
+      template-file: "ecs.yaml"
+    secrets: inherit
