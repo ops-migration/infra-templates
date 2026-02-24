@@ -12,6 +12,9 @@ Resources:
         PrivateSubnet2: subnet-0beccc540fd135816
         KeyPairName: dev-ecs-keypair
         InstanceType: t4g.small
+        ALBSecurityGroup: sg-01f333a654dbac8f1
+        ALBTargetGroupArn: arn:aws:elasticloadbalancing:us-east-1:533267275979:listener/app/dev-alb/1376405deaecf4d1/51a678a003d78b46
+        
       Tags:
         - Key: Environment
           Value: dev
