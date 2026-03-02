@@ -29,6 +29,8 @@ Resources:
         PrivateSubnet2: subnet-03f8f438576701c78
         KeyPairName: dev-ecs-keypair
         InstanceType: t4g.small
+        ALBSecurityGroup: !GetAtt ALBStack.Outputs.ALBSecurityGroupId
+        ALBTargetGroupArn: !GetAtt ALBStack.Outputs.ALBTargetGroupArn
       Tags:
         - Key: Environment
           Value: dev
