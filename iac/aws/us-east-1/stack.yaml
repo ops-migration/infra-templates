@@ -103,7 +103,7 @@ Resources:
         - Key: ManagedBy
           Value: CloudFormation
 
-  #---- 8. Secret Manager -----------------------------------------------------------
+  #---- 8. Secret Manager ------------------------------------------------------------
   SecretsManagerStack:
     Type: AWS::CloudFormation::Stack  
     Properties: 
@@ -122,4 +122,4 @@ Outputs:
   ExecutionRoleArn:
     Description: IAM Execution Role ARN
     Value: !GetAtt IAMStack.Outputs.ExecutionRoleArn
- 
+    
