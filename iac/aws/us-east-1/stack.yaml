@@ -1,34 +1,32 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: ALB Nested Stack - Internet-facing Application Load Balancer
+Description: Infra Stack - Main stack to orchestrate nested stacks for VPC, ALB, ECS Cluster, IAM Roles, S3, ECR, and Secrets Manager
 Resources:
-#----------------------------------------------------------------
-
+  #---- 1. ALB ------------------------------------------------------------
   ALBStack:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://ecs-migration-cloud-formation-templates.s3.us-east-1.amazonaws.com/templates/alb.yaml
       Parameters:
         Environment: dev
-        VpcId: vpc-04c6d87c521fddb25 # Replace with actual VPC ID
-        PublicSubnet1: subnet-0fc41a16b6ecbb14d # Replace with actual Public Subnet 1 ID
-        PublicSubnet2: subnet-0f520177833df3f2e # Replace with actual Public Subnet 2 ID
+        VpcId: '{{resolve:ssm:/cfn/vpc/VpcId}}'
+        PublicSubnet1: '{{resolve:ssm:/cfn/vpc/PublicSubnet1}}'
+        PublicSubnet2: '{{resolve:ssm:/cfn/vpc/PublicSubnet2}}'
       Tags:
         - Key: Environment
           Value: dev
         - Key: ManagedBy
           Value: CloudFormation 
 
-#----------------------------------------------------------------
-
+  #---- 2. ECS Cluster ------------------------------------------------------------
   ECSStack:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://ecs-migration-cloud-formation-templates.s3.us-east-1.amazonaws.com/templates/ecs.yaml
       Parameters:
         Environment: dev
-        VpcId: vpc-04c6d87c521fddb25
-        PrivateSubnet1: subnet-0eabd0999a1e9300b
-        PrivateSubnet2: subnet-03f8f438576701c78
+        VpcId: '{{resolve:ssm:/cfn/vpc/VpcId}}'
+        PublicSubnet1: '{{resolve:ssm:/cfn/vpc/PublicSubnet1}}'
+        PublicSubnet2: '{{resolve:ssm:/cfn/vpc/PublicSubnet2}}'
         KeyPairName: dev-ecs-keypair
         InstanceType: m7i-flex.large
         ALBSecurityGroup: !GetAtt ALBStack.Outputs.ALBSecurityGroupId
@@ -39,18 +37,84 @@ Resources:
         - Key: ManagedBy
           Value: CloudFormation
 
-#----------------------------------------------------------------
-
+  #---- 3. IAM Execution Role ------------------------------------------------------------
   IAMStack:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://ecs-migration-cloud-formation-templates.s3.us-east-1.amazonaws.com/templates/iam-execution.yaml
       Parameters:
         Environment: dev
-        AppName: myapp
+      Tags:
+        - Key: Environment
+          Value: dev
+        - Key: ManagedBy
+          Value: CloudFormation
 
-#----------------------------------------------------------------
+  #---- 4. S3 ------------------------------------------------------------ 
+  S3Stack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://ecs-migration-cloud-formation-templates.s3.us-east-1.amazonaws.com/templates/s3.yaml
+      Parameters:
+        Environment: dev
+      Tags:
+        - Key: Environment
+          Value: dev
+        - Key: ManagedBy
+          Value: CloudFormation
 
+  #---- 5. IAM Task Role ------------------------------------------------------------
+  IAMTaskStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://ecs-migration-cloud-formation-templates.s3.us-east-1.amazonaws.com/templates/iam-task.yaml
+      Parameters:
+        Environment: dev
+      Tags:
+        - Key: Environment
+          Value: dev    
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  #---- 6. Target Group ------------------------------------------------------------
+  TargetGroupStack:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: https://ecs-migration-cloud-formation-templates.s3.us-east-1.amazonaws.com/templates/target-group.yaml
+      Parameters:
+        Environment: dev
+        AcquiflowName: acquiflow
+      Tags:
+        - Key: Environment
+          Value: dev    
+        - Key: ManagedBy
+          Value: CloudFormation 
+
+  #---- 7. ECR Repository ------------------------------------------------------------
+  ECRStack:
+    Type: AWS::CloudFormation::Stack    
+    Properties: 
+      TemplateURL: https://ecs-migration-cloud-formation-templates.s3.us-east-1.amazonaws.com/templates/ecr.yaml
+      Parameters:
+        Environment: dev
+      Tags:
+        - Key: Environment
+          Value: dev    
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  #---- 8. Secret Manager ------------------------------------------------------------
+  SecretsManagerStack:
+    Type: AWS::CloudFormation::Stack  
+    Properties: 
+      TemplateURL: https://ecs-migration-cloud-formation-templates.s3.us-east-1.amazonaws.com/templates/secrets-manager.yaml
+      Parameters:
+        Environment: dev
+      Tags:
+        - Key: Environment
+          Value: dev    
+        - Key: ManagedBy
+          Value: CloudFormation 
 Outputs:
   ECSClusterName:
     Description: ECS Cluster Name
@@ -58,6 +122,4 @@ Outputs:
   ExecutionRoleArn:
     Description: IAM Execution Role ARN
     Value: !GetAtt IAMStack.Outputs.ExecutionRoleArn
-
-#-------------------------------------------------------------
-    
+ 
