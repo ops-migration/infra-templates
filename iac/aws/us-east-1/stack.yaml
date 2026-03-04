@@ -79,11 +79,13 @@ Resources:
   #---- 6. Target Group ------------------------------------------------------------
   TargetGroupStack:
     Type: AWS::CloudFormation::Stack
+    DependsOn: ALBStack
     Properties: 
       TemplateURL: https://ecs-migration-cloud-formation-templates.s3.us-east-1.amazonaws.com/templates/target-group.yaml
       Parameters:
         Environment: dev
         VpcId: '{{resolve:ssm:/cfn/vpc/VpcId}}'
+        ALBHTTPListenerArn: !GetAtt ALBStack.Outputs.ALBHTTPListenerArn
       Tags:
         - Key: Environment
           Value: dev
