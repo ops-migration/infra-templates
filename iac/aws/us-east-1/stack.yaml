@@ -17,7 +17,7 @@ Resources:
         - Key: ManagedBy
           Value: CloudFormation 
 
-  #---- 2. ECS Cluster ------------------------------------------------------------
+  #---- 2. ECS Cluster ---------------------------------------------------------
   ECSStack:
     Type: AWS::CloudFormation::Stack
     Properties:
