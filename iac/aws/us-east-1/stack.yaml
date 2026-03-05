@@ -63,7 +63,7 @@ Resources:
         - Key: ManagedBy
           Value: CloudFormation
 
-  #---- 5. IAM Task Role ------------------------------------------------------------
+  #---- 5. IAM Task Role ----------------------------------------------------------
   IAMTaskStack:
     Type: AWS::CloudFormation::Stack
     Properties:
