@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ALB Stack - Deploys internet-facing Application Load Balancer
+
+Resources:
+  ALBStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://ecs-migration-cloud-formation-templates.s3.us-east-1.amazonaws.com/templates/alb.yaml
+      Parameters:
+        Environment: dev
+        VpcId: '{{resolve:ssm:/cfn/vpc/VpcId}}'
+        PublicSubnet1: '{{resolve:ssm:/cfn/vpc/PublicSubnet1}}'
+        PublicSubnet2: '{{resolve:ssm:/cfn/vpc/PublicSubnet2}}'
+      Tags:
+        - Key: Environment
+          Value: dev
+        - Key: ManagedBy
+          Value: CloudFormation

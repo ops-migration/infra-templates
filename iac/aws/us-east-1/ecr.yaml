@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ECR Stack - function-manager repository
+
+Resources:
+  FunctionManagerECRStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://ecs-migration-cloud-formation-templates.s3.us-east-1.amazonaws.com/templates/ecr.yaml
+      Parameters:
+        Environment: dev
+        RepoName: function-manager
+      Tags:
+        - Key: Environment
+          Value: dev
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  AcquiflowECRStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://ecs-migration-cloud-formation-templates.s3.us-east-1.amazonaws.com/templates/ecr.yaml
+      Parameters:
+        Environment: dev
+        RepoName: acquiflow
+      Tags:
+        - Key: Environment
+          Value: dev
+        - Key: ManagedBy
+          Value: CloudFormation

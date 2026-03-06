@@ -9,6 +9,4 @@ jobs:
   deploy:
     uses: ops-migration/github_shared_templates/.github/workflows/cd-templates.yml@main
     with:
-      cf-stack-name: "dev-stack"
-
-      
+      environment: "dev"
