@@ -10,3 +10,4 @@ jobs:
     uses: ops-migration/github_shared_templates/.github/workflows/cd-templates.yml@main
     with:
       environment: "dev"
+      github-token: ${{ secrets.PAT_TOKEN }}
