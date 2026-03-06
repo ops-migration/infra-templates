@@ -16,7 +16,6 @@ jobs:
     with:
       environment: "dev"
       stacks-path: "iac/aws/us-east-1"
-      commits-json: ${{ toJson(github.event.commits) }}   # ← pass raw JSON string
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
