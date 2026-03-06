@@ -14,7 +14,3 @@ Resources:
       Tags:
         - Key: Environment
           Value: dev
-        - Key: ManagedBy
-          Value: CloudFormation
-
-
